@@ -75,3 +75,59 @@ TEST(PasswordTest, hard_password)
 	Password my_password;
 	ASSERT_TRUE(my_password.count_leading_characters("%*%#*(/[,.]/;/*"));
 }
+
+//______________________________________________________________________________
+
+TEST(PasswordTest, uniqueCharacters_emptyString_returnsZero)
+{
+    Password pw;
+    ASSERT_EQ(0, pw.unique_characters(""));
+}
+
+TEST(PasswordTest, uniqueCharacters_singleCharacter_returnsOne)
+{
+    Password pw;
+    ASSERT_EQ(1, pw.unique_characters("x"));
+}
+
+TEST(PasswordTest, uniqueCharacters_allDuplicateCharacters_returnsOne)
+{
+    Password pw;
+    ASSERT_EQ(1, pw.unique_characters("aaaaaa"));
+}
+
+TEST(PasswordTest, uniqueCharacters_allUniqueCharacters_returnsLength)
+{
+    Password pw;
+    ASSERT_EQ(6, pw.unique_characters("abcdef"));
+}
+
+TEST(PasswordTest, uniqueCharacters_mixedDuplicates_returnsCorrectCount)
+{
+    Password pw;
+    ASSERT_EQ(3, pw.unique_characters("aabcc"));
+}
+
+TEST(PasswordTest, uniqueCharacters_caseSensitive_countsSeparately)
+{
+    Password pw;
+    ASSERT_EQ(2, pw.unique_characters("aA"));
+}
+
+TEST(PasswordTest, uniqueCharacters_numbersAreCounted)
+{
+    Password pw;
+    ASSERT_EQ(4, pw.unique_characters("1122334"));
+}
+
+TEST(PasswordTest, uniqueCharacters_symbolsAreCounted)
+{
+    Password pw;
+    ASSERT_EQ(4, pw.unique_characters("!@!#"));
+}
+
+TEST(PasswordTest, uniqueCharacters_mixedTypes_countsAllUnique)
+{
+    Password pw;
+    ASSERT_EQ(6, pw.unique_characters("aA1!aA"));
+}
