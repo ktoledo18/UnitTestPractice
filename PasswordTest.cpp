@@ -78,6 +78,32 @@ TEST(PasswordTest, hard_password)
 
 //______________________________________________________________________________
 
+TEST(PasswordTest, hasMixedCase_onlyLowercase_returnsFalse)
+{
+    Password pw;
+    ASSERT_FALSE(pw.has_mixed_case("abcde"));
+}
+
+TEST(PasswordTest, hasMixedCase_onlyUppercase_returnsFalse)
+{
+    Password pw;
+    ASSERT_FALSE(pw.has_mixed_case("ABCDE"));
+}
+
+TEST(PasswordTest, hasMixedCase_upperThenLower_returnsTrue)
+{
+    Password pw;
+    ASSERT_TRUE(pw.has_mixed_case("Aabc"));
+}
+
+TEST(PasswordTest, hasMixedCase_lowerThenUpper_returnsFalse)
+{
+    Password pw;
+    ASSERT_TRUE(pw.has_mixed_case("abcA"));
+}
+
+//______________________________________________________________________________
+
 TEST(PasswordTest, uniqueCharacters_emptyString_returnsZero)
 {
     Password pw;
@@ -123,11 +149,11 @@ TEST(PasswordTest, uniqueCharacters_numbersAreCounted)
 TEST(PasswordTest, uniqueCharacters_symbolsAreCounted)
 {
     Password pw;
-    ASSERT_EQ(4, pw.unique_characters("!@!#"));
+    ASSERT_EQ(3, pw.unique_characters("!@!#"));
 }
 
 TEST(PasswordTest, uniqueCharacters_mixedTypes_countsAllUnique)
 {
     Password pw;
-    ASSERT_EQ(6, pw.unique_characters("aA1!aA"));
+    ASSERT_EQ(4, pw.unique_characters("aA1!aA"));
 }
